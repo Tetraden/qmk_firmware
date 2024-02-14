@@ -15,7 +15,7 @@
  */
 #include QMK_KEYBOARD_H
 #include <keymap.h>
-#include "action_layer.h"
+#include "sendstring_german.h"
 #include "layers.h"
 
 // create custom keycodes for NEO shift functions
@@ -48,9 +48,11 @@ enum custom_keycodes {
 		MC_NEO,
 	  	MC_EJCT,
 		MC_CT_N,
+		MC_LOCK,
 		MC_USR,
 		MC_PWD,
 		MC_PWD2,
+		MC_PWD3,
 		// custom neo related keycodes
 		NO_UONE
 	};
@@ -89,7 +91,13 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 		break;
 	case MC_CT_N:
 		if (record->event.pressed) {
-			SEND_STRING(SS_RCTL("j"));
+			SEND_STRING(SS_RCTL("n"));
+		} else {
+		}
+		break;
+	case MC_LOCK:
+		if (record->event.pressed) {
+			SEND_STRING(SS_LGUI("l"));
 		} else {
 		}
 		break;
@@ -101,13 +109,19 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 		break;
 	case MC_PWD:
 		if (record->event.pressed) {
-			SEND_STRING("k8Wreckou$fi");
+			SEND_STRING("02k8Wreckou$fi05");
 		} else {
 		}
 		break;
 	case MC_PWD2:
 		if (record->event.pressed) {
 			SEND_STRING("9WRECKOU");
+		} else {
+		}
+		break;
+	case MC_PWD3:
+		if (record->event.pressed) {
+			SEND_STRING("m8Wreckou(ib108");
 		} else {
 		}
 		break;
@@ -189,15 +203,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 		KC_ESC,		KC_1,		KC_2,		KC_3,		KC_4,		KC_5,		KC_6,		KC_7,		KC_8,		KC_9,		KC_0,		KC_MINS,	KC_EQL,		KC_BSPC,	KC_DEL,
 		KC_TAB,		KC_Q,		KC_W,		KC_E,		KC_R,		KC_T,		KC_Y,		KC_U,		KC_I,		KC_O,		KC_P,		KC_LBRC,	KC_RBRC,				KC_PPLS,
 		KC_CAPS,	KC_A,		KC_S,		KC_D,		KC_F,		KC_G,		KC_H,		KC_J,		KC_K,		KC_L,		KC_SCLN,	KC_QUOT,	KC_NUHS,	KC_ENT,		KC_PMNS,
-		KC_LSFT,	KC_NUBS,	KC_Z,		KC_X,		KC_C,		KC_V,		KC_B,		KC_N,		KC_M,		KC_COMM,	KC_DOT, 	KC_SLSH,	KC_RSFT,	KC_UP,		______,
+		KC_LSFT,	KC_NUBS,	KC_Z,		KC_X,		KC_C,		KC_V,		KC_B,		KC_N,		KC_M,		KC_COMM,	KC_DOT, 	KC_SLSH,	KC_RSFT,	KC_UP,		MC_LOCK,
 		KC_LCTL,	KC_LGUI,	KC_LALT,										KC_SPC,											KC_RALT,	MO(_FN),	KC_LEFT,	KC_DOWN,	KC_RGHT
 	),
 
     [NEO_1] = LAYOUT_65_iso_blocker(
 		KC_ESC,		NO_1,		NO_2,		NO_3,		NO_4,		NO_5,		NO_6,		NO_7,		NO_8,		NO_9,		NO_0,		NO_MINS,	S(KC_EQL),	KC_BSPC,	KC_DEL,
-		KC_TAB,		KC_X,		KC_V,		KC_L,		KC_C,		KC_W,		KC_K,		KC_H,		KC_G,		KC_F,		KC_Q,		KC_MINS,	KC_EQL,				KC_PPLS,
+		KC_TAB,		KC_X,		KC_V,		KC_L,		KC_C,		KC_W,		KC_K,		KC_H,		KC_G,		KC_F,		KC_Q,		KC_MINS,	KC_EQL,					KC_PPLS,
 		MO(NEO_3),	KC_U,		KC_I,		KC_A,		KC_E,		KC_O,		KC_S,		KC_N,		KC_R,		KC_T,		KC_D,		KC_Z,		MO(NEO_3),	KC_ENT,		KC_PMNS,
-		KC_LSFT,	MO(NEO_4),	KC_LBRC,	KC_SCLN,	KC_QUOT,	KC_P,		KC_Y,		KC_B,		KC_M,		KC_COMM,	KC_DOT, 	KC_J,		KC_RSFT,	KC_UP,		______,
+		KC_LSFT,	MO(NEO_4),	KC_LBRC,	KC_SCLN,	KC_QUOT,	KC_P,		KC_Y,		KC_B,		KC_M,		KC_COMM,	KC_DOT, 	KC_J,		KC_RSFT,	KC_UP,		MC_LOCK,
 		KC_LCTL,	KC_LGUI,	KC_LALT,										KC_SPC,											MO(NEO_4),	MO(_FN),	KC_LEFT,	KC_DOWN,	KC_RGHT
 	),
 
@@ -223,8 +237,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 		//Tab		pgup		bspc		up			del			pgdn		¡			7			8			9			+			−			˝(dead)
 		______,		KC_PGUP,	KC_BSPC,	KC_UP,		KC_DELETE,	KC_PGDN,	NO_INV_EXLM,KC_7,		KC_8,		KC_9,		KC_RBRC,	______,		______,					______,
 		// row	complete
-		______,		KC_HOME,	KC_LEFT,	KC_DOWN,	KC_RIGHT,	KC_END,		NO_INV_QUES,KC_4,		KC_5,		KC_6,		KC_COMM,	KC_DOT,		______,		______,		______,
-		//shift		Mod4		Esc			Tab			insert		enter		Ctrl+Z		:			1			2			3			;
+		______,		KC_HOME,	KC_LEFT,	KC_DOWN,	KC_RIGHT,	KC_END,		NO_INV_QUES,KC_4,		KC_5,		KC_6,		KC_COMM,	KC_DOT,		______,		KC_PENT,	______,
+		//shift		Mod4		Esc			Tab			insert		enter		Ctrl+Z		:			1			2			3			;			Shift		Up
 		______,		______,		KC_ESCAPE,	KC_TAB,		KC_INSERT,	KC_PENT,	______,		S(KC_DOT),	KC_1,		KC_2,		KC_3,		S(KC_COMM),	______,		______,		______,
 		//Ctrl		GUI			Alt												Space											Mod4		Fn			Left		Down		Right
 		KC_RCTL,	______,		KC_RALT,										KC_0,											______,		______,		______,		______,		______
@@ -262,7 +276,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 		KC_GRV,		KC_F1,		KC_F2,		KC_F3,		KC_F4,		KC_F5,		KC_F6,		KC_F7,		KC_F8,		KC_F9,		KC_F10,		KC_F11,		KC_F12,		______,		MC_NEO,
 		______,		RGB_TOG,	RGB_MOD,	RGB_HUI,	RGB_SAI,	RGB_VAI,	RGB_SPI,	______,		______,		______,		______,		______,		______,					TO(NEO_1),
 		______,		MC_USR,		RGB_RMOD,	RGB_HUD,	RGB_SAD,	RGB_VAD,	RGB_SPD,	MC_CT_N,	______,		______,		______,		______,		______,		______,		TO(QWERTZ),
-		______,		______,		______,		______,		______,		MC_PWD,		MC_PWD2,	______,		______,		______,		______,		______,		______,		KC_PGUP,	MC_EJCT,
+		______,		______,		______,		______,		______,		MC_PWD,		MC_PWD2,	MC_PWD3,	______,		______,		______,		______,		______,		KC_PGUP,	MC_EJCT,
 		______,		QK_BOOT,	______,											______,											______,		______,		KC_HOME,	KC_PGDN,	KC_END
 	),
 
